@@ -4,7 +4,6 @@ import numpy as np
 from collections import Counter
 import matplotlib.pyplot as plt
 from numpy.core.fromnumeric import size
-import statistics
 
 def read_img(image):
     try:
@@ -52,8 +51,8 @@ def my_img(image):
 
     return img
 
-def draw_circle(x,y):
-    img = read_img()
+def draw_circle(image,x=148,y=115):
+    img = read_img(image)
     img = cv.circle(img, (x,y), 20, (255,0,0), 2)
     cv.imshow("Circle", img)
     return img
@@ -79,8 +78,8 @@ def histogram(image):
     plt.title('Histogram_sliding')
     plt.show()
 
-def stretching():
-    img= my_img()
+def stretching(image):
+    img= my_img(image)
     print(img.shape)
     stret_img = np.zeros((img.shape[0],img.shape[1]),dtype = 'uint8')
     # Loop over the image and apply Min-Max formulae
@@ -141,7 +140,7 @@ def equalize(image):
     plt.show()
 
 
-def threshold(image, thres): 
+def threshold(image, thres=120): 
     try:
         image_src = cv.imread(image,0)
     except:
@@ -192,52 +191,52 @@ def otsu(image):
     #img =np.array([1,2,1,3,4,5,6,8,9,1,2,3,4,2])
 
     sigmas_btw = np.zeros((256,))
-    sigmas_wtn = np.zeros((256,))
+    #sigmas_wtn = np.zeros((256,))
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=RuntimeWarning)
         for T in range(1,255):
-            c0= img[img <= T]
-            w0= sum(c0)/ np.sum(img)
-            u0= np.mean(c0)
-            v0= np.var(c0)
+            ##c0= img[img <= T]
+            ##w0= sum(c0)/ img.size
+            #print(w0)
+            ##u0= np.mean(c0)
+            ##u0 = np.array(c0).mean()
+            #v0= np.var(c0)
+            ##################
+            c0 = img <= T
+            w0 = sum(sum(c0)) / img.size
+            #print(sum(sum(c0)))
+            u0 = np.mean(img[c0])
+            c1 = img > T
+            w1 = 1 - w0
+            u1 = np.mean(img[c1])
 
-            c1= img[img > T]
-            w1= 1- w0
-            u1= np.mean(c1)
+            #c1= img[img > T]
+            ##w1= 1- w0
+            ##u1= np.mean(c1)
+            ##u1 = np.array(c1).mean()
             v1= np.var(c1)
 
             sigma_between = w0* w1* ((u0- u1)** 2)
-            sigma_within = w0 * v0 + w1 * v1
+            #sigma_within = w0 * v0 + w1 * v1
             
             #sigmasNan[T]= np.array([np.isnan(sigma_between),np.isnan(sigma_within)]) 
             sigmas_btw[T]= sigma_between
-            sigmas_wtn[T]= sigma_within
+            #sigmas_wtn[T]= sigma_within
         
-        #print(sigmas_wtn)
+        #print(sigmas_btw)
         sigmas_btw=sigmas_btw[~np.isnan(sigmas_btw)]  
-        sigmas_wtn=sigmas_wtn[~np.isnan(sigmas_wtn)] 
+        #sigmas_wtn=sigmas_wtn[~np.isnan(sigmas_wtn)] 
         
         thresh_btw = np.array(np.argmax(sigmas_btw))
-        thresh_wth = np.array(np.argmin(sigmas_wtn))
+        #thresh_wth = np.array(np.argmin(sigmas_wtn))
         print("otsu: ", thresh_btw)
         threshold(image,thresh_btw)
         
         
     
 
-    ##Using Library:
-    # ret, imgf = cv.threshold(img, 0, 255, cv.THRESH_BINARY+cv.THRESH_OTSU)
-    # fig=plt.figure()
-    # fig.add_subplot(1, 2, 1)   # subplot one
-    # plt.imshow(img, cmap='gray')
-    # fig.add_subplot(1, 2, 2)   # subplot two
-    # # my data is OK to use img colormap (0:black, 1:white)
-    # plt.imshow(imgf, cmap='gray')  # use appropriate colormap here
-    # plt.show()
 
-    #threshold(image,Totsu)
-
-def otsuu(image):
+def otsu_lib(image):
     try:
         img = cv.imread(image,0)
     except:
@@ -253,6 +252,10 @@ def otsuu(image):
     plt.show()
 
     #threshold(image,ret)
+
+    #pages:
+    #https://learnopencv.com/otsu-thresholding-with-opencv/
+    #http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html
     
 
 
@@ -260,12 +263,12 @@ def otsuu(image):
 def main():
     #green()
     #Asigment 1: 
-    #my_img()
-    #draw_circle(148,115)
+    #my_img("lena.jpg")
+    #draw_circle("lena.jpg")
 
     #Asigment 2:
-    #histogram()
-    #stretching()
+    #histogram("lena.jpg")
+    #stretching("lena.jpg")
     #equalize("landscape.jpg")
     #threshold("lena.jpg",100)
     #dynamic_tres("lena.jpg")
