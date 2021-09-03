@@ -161,8 +161,8 @@ def main():
     #median_filter("noise.jpg")
     #maximun_filter("noise.jpg")
     #minimun_filter("noise.jpg")
-    #midpoint_filter("noise.jpg")
-    alpha_trimmed_filter("noise.jpg")
+    midpoint_filter("lena.jpg")
+    #alpha_trimmed_filter("noise.jpg")
 
 
 
