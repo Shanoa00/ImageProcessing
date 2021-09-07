@@ -1,18 +1,21 @@
 import cv2 as cv
 import numpy as np
 
-def flood_recursive(image):
+def flood_recursive(image, x=100,y=100):
     try:
         img = cv.imread(image,0) # Read Img in BGR Colour
         (thresh, img_bin) = cv.threshold(img, 20, 255, cv.THRESH_BINARY)
     except:
         print("check image path!!")
-    mask = np.zeros(np.asarray(numeric_matrix.shape)+2, dtype=np.uint8)
+    mask = np.zeros(np.asarray(img_bin.shape)+2, dtype=np.uint8)
     start_pt = (y,x)
-    if matrix_np[start_pt]:
-        cv.floodFill(numeric_matrix, mask, start_pt, 255, flags=4)
+    if img_bin[start_pt]:
+        cv.floodFill(img_bin, mask, start_pt, 255, flags=4)
     mask = mask[1:-1, 1:-1]
-    matrix_np[mask==1] = "c"
+    img_bin[mask==1] = "c"
+    #http://inventwithpython.com/blog/2011/08/11/recursion-explained-with-the-flood-fill-algorithm-and-zombies-and-cats/
+    #https://stackoverflow.com/questions/19839947/flood-fill-in-python
+    # https://docs.opencv.org/2.4/modules/imgproc/doc/miscellaneous_transformations.html?highlight=floodfill#floodfill     
 
 
 def two_pass(image):
