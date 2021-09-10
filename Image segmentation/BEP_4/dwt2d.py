@@ -74,15 +74,14 @@ def idwt2d(cA, cH, cV, cD):
         x_[row_idx] = idwt(rows_a[row_idx], rows_d[row_idx])
     return x_
 
-img = cv2.imread('eagle_noise_horizontal.png', 0)
+img = cv2.imread('lena.jpg', 0)
 img = cv2.resize(img, (256, 256))
 
 cA, cH, cV, cD = dwt2d(img)
 
 print(cA.max(), cA.mean())
 
-thresh = 200
-
+thresh = 5
 for dim in range(cD.shape[0]):
     for c in range(cD.shape[1]):
         if abs(cH[dim, c]) > thresh:
