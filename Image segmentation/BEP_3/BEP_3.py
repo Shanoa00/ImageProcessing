@@ -157,11 +157,11 @@ def alpha_trimmed_filter(image,a=1):
     cv.imshow('Alpha_trimmed_filtered', alp_img)
     
 def main():
-    #avg_filter("noise.jpg")
+    avg_filter("noise.jpg")
     #median_filter("noise.jpg")
     #maximun_filter("noise.jpg")
     #minimun_filter("noise.jpg")
-    midpoint_filter("lena.jpg")
+    #midpoint_filter("lena.jpg")
     #alpha_trimmed_filter("noise.jpg")
 
 
